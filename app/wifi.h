@@ -1,10 +1,12 @@
 #include <WiFi.h>
 
 class WIFI_CONNECTION {
+  // Variables
 public:
   const char* SSID = "Megacable_2.4G_C542";  // Nombre de la red
   const char* PASSWORD = "dUnwKs3J";         // Contraseña de la red
 
+  // Metodos
 public:
   void stablish_connection(void);      // Funcion para inicializar la conexion WiFi
   String get_connection_status(void);  // Funcion para obtener el estado de la conexión WiFi
