@@ -3,8 +3,8 @@
 class WIFI_CONNECTION {
   // Variables
 public:
-  const char* SSID = "Megacable_2.4G_C542";  // Nombre de la red
-  const char* PASSWORD = "dUnwKs3J";         // Contraseña de la red
+  const char* SSID = "";  // Nombre de la red
+  const char* PASSWORD = "";         // Contraseña de la red
 
   // Metodos
 public:
