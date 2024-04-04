@@ -2,9 +2,9 @@
 #include "displayOled.h"
 #include "rfid.h"
 
-WIFI_CONNECTION wifi;  // Instanciando la clase WIFI_CONNECTION
-DISPLAY_OLED oled;     // Instanciado la clase DISPLAY_OLED
-RFID rfid;             // Instanciando la clase RFID
+WifiConnection wifi;  // Instanciando la clase WifiConnection
+DisplayOled oled;     // Instanciado la clase DisplayOled
+Rfid rfid;            // Instanciando la clase Rfid
 
 void setup() {
   Serial.begin(115200);

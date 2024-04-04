@@ -1,14 +1,16 @@
-class magneticModules {
+class MagneticModules {
+  // Variables
 public:
-  const int8_t SENSOR_1 = 23;
-  const int8_t SENSOR_2 = 22;
-  const int8_t SENSOR_3 = 21;
-  const int8_t SENSOR_4 = 20;
-  const int8_t SENSOR_ENTRADA_1 = 27;
-  const int8_t SENSOR_ENTRADA_2 = 26;
-  const int8_t SENSOR_SALIDA_1 = 25;
-  const int8_t SENSOR_SALIDA_2 = 24;
+  const int8_t SENSOR_1 = 23;          // GPIO 15
+  const int8_t SENSOR_2 = 22;          // GPIO 8
+  const int8_t SENSOR_3 = 21;          // GPIO 7
+  const int8_t SENSOR_4 = 20;          // GPIO 6
+  const int8_t SENSOR_ENTRADA_1 = 27;  // GPIO 16
+  const int8_t SENSOR_ENTRADA_2 = 26;  // GPIO 4
+  const int8_t SENSOR_SALIDA_1 = 25;   // GPIO 0
+  const int8_t SENSOR_SALIDA_2 = 24;   // GPIO 2
 
+  // Metodos
 public:
   void sensor_init(void);
   void sensor_count(void);

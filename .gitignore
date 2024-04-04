@@ -1,0 +1,20 @@
+# Archivos de compilación
+*.o
+*.elf
+*.bin
+
+# Directorios de compilación
+build/
+dist/
+
+# Archivos de configuración del IDE
+.vscode/
+*.json
+*.ini
+
+# Archivos de biblioteca
+libraries/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db

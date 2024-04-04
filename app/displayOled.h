@@ -3,7 +3,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SH110X.h>
 
-class DISPLAY_OLED {
+class DisplayOled {
   // Variables
 public:
   const uint8_t SCREEN_ADDRESS = 0x3C;
@@ -21,12 +21,12 @@ public:
   void display_clear_screen(void);
 };
 
-void DISPLAY_OLED::display_initialization(void) {
+void DisplayOled::display_initialization(void) {
   delay(250);       // Esperando a que el OLED se encienda
   display.begin();  // Inicializando la comunicación con la pantalla
 }
 
-void DISPLAY_OLED::display_print_message(String message, uint8_t SCREEN_X, uint8_t SCREEN_Y) {
+void DisplayOled::display_print_message(String message, uint8_t SCREEN_X, uint8_t SCREEN_Y) {
   display.clearDisplay();                 // Limpiando la pantalla
   display.setTextSize(1);                 // Estableciendo el tamaño del texto
   display.setTextColor(SH110X_WHITE);     // Estableciendo el color del texto
@@ -35,7 +35,7 @@ void DISPLAY_OLED::display_print_message(String message, uint8_t SCREEN_X, uint8
   display.display();                      // Actualizando la pantalla para mostrar el cambio
 }
 
-void DISPLAY_OLED::display_clear_screen(void) {
+void DisplayOled::display_clear_screen(void) {
   display.clearDisplay();  // Limpiando la pantalla
   display.display();       // Actualizando la pantalla para mostrar el cambio
 }
