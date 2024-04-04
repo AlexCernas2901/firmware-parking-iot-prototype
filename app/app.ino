@@ -3,7 +3,7 @@
 #include "rfid.h"
 
 WifiConnection wifi;  // Instanciando la clase WifiConnection
-DisplayOled oled;     // Instanciado la clase DisplayOled
+DisplayOled oled;     // Instanciando la clase DisplayOled
 Rfid rfid;            // Instanciando la clase Rfid
 
 void setup() {

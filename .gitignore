@@ -4,16 +4,16 @@
 *.bin
 
 # Directorios de compilación
-build/
-dist/
+/build
+/dist
 
 # Archivos de configuración del IDE
-.vscode/
+/.vscode
 *.json
 *.ini
 
 # Archivos de biblioteca
-libraries/
+/libraries
 
 # Archivos de sistema
 .DS_Store
