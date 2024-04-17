@@ -10,7 +10,19 @@ public:
   const int8_t SENSOR_SALIDA2 = 24;  // GPIO 2
 
 public:
-  void init(void);
-  void sensorCount(void);
-  void sensorState();
+  void init(int8_t);
+  void readSensor(int8_t);
 };
+
+void MagneticModules::init(int8_t sensor) {
+  pinMode(sensor, INPUT);
+}
+
+void MagneticModules::readSensor(int8_t sensor) {
+    if (digitalRead(sensor) == HIGH) {   
+      Serial.println("Campo magnético detectado");
+    }
+    else{
+      Serial.println("Campo magnético no detectado");
+    }
+}
