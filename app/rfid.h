@@ -1,19 +1,17 @@
 #include <MFRC522.h>
 #include <SPI.h>
 
-class Rfid {
-  // Variables
+class RfidReader {
 public:
-  const uint8_t SS_PIN = 29;   // GPIO 5
-  const uint8_t RST_PIN = 12;  // GPIO 27
-  MFRC522 rfid = MFRC522(SS_PIN, RST_PIN);
+  const uint8_t SSPIN = 29;  // GPIO 5
+  const uint8_t RSTPIN = 12; // GPIO 27
+  MFRC522 rfid = MFRC522(SSPIN, RSTPIN);
 
-  // Metodos
 public:
-  String rfid_initialization(void);
+  String init(void);
 };
 
-String Rfid::rfid_initialization(void) {
-  SPI.begin();      // init SPI bus
-  rfid.PCD_Init();  // init MFRC522
+String RfidReader::init(void) {
+  SPI.begin();     // init SPI bus
+  rfid.PCD_Init(); // init MFRC522
 }

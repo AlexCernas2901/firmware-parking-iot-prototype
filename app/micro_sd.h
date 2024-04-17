@@ -1,22 +1,20 @@
 #include <SD.h>
 #include <SPI.h>
 
-File MicroSD_File;  // Archivo para escribir  o leer en la MicroSD
+File microSDFile; // Archivo para escribir  o leer en la MicroSD
 
 class MicroSD {
-  // Variables
 public:
   uint8_t contador = 0;
-  String filename = "/TestMicroSD.txt";  // Nombre de archivo que incluye "/" que indica la ubicación en raíz
+  String filename = "/test_microsd.txt"; // Nombre de archivo que incluye "/" que indica la ubicación en raíz
 
-  // Metodos
 public:
-  void MicroSD_init(void);
-  void SaveFile(void);
-  void ReadFile(void);
+  void init(void);
+  void saveFile(void);
+  void readFile(void);
 };
 
-void MicroSD::MicroSD_init(void) {
+void MicroSD::init(void) {
   while (!SD.begin(MICROSD_PIN)) {
     Serial.println(F("Falló la inicialización del módulo MicroSD"));
     delay(1000);
@@ -24,14 +22,14 @@ void MicroSD::MicroSD_init(void) {
   Serial.println(F("La librería MicroSD ha inicializado con éxito"));
 }
 
-void MicroSD::SaveFile(void) {
-  MicroSD_File = SD.open(filename, FILE_APPEND);
+void MicroSD::saveFile(void) {
+  microSDFile = SD.open(filename, FILE_APPEND);
 
-  if (MicroSD_File) {
-    MicroSD_File.print(F("Contador en: "));
-    MicroSD_File.println(contador);
+  if (microSDFile) {
+    microSDFile.print(F("Contador en: "));
+    microSDFile.println(contador);
     contador++;
-    MicroSD_File.close();
+    microSDFile.close();
   } else {
     Serial.print(F("Error opening "));
     Serial.println(filename);
@@ -50,17 +48,17 @@ void MicroSD::SaveFile(void) {
   delay(1000);
 }
 
-void MicroSD::ReadFile(void) {
-  MicroSD_File = SD.open(filename);
+void MicroSD::readFile(void) {
+  microSDFile = SD.open(filename);
 
-  if (MicroSD_File) {
+  if (microSDFile) {
     Serial.println("Archivo:");
 
-    while (MicroSD_File.available()) {
-      Serial.write(MicroSD_File.read());
+    while (microSDFile.available()) {
+      Serial.write(microSDFile.read());
     }
 
-    MicroSD_File.close();
+    microSDFile.close();
   } else {
     Serial.println("Error abriendo el archivo");
   }

@@ -1,6 +1,5 @@
 class Servos {
-  // Varibles
 public:
-  const int8_t servo_entrada = 18;  // GPIO 10
-  const int8_t servo_salida = 19;   // GPIO 11
+  const int8_t SERVO_ENTRADA = 18; // GPIO 10
+  const int8_t SERVO_SALIDA = 19;  // GPIO 11
 };
