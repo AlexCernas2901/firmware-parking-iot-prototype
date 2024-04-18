@@ -1,20 +1,19 @@
-# Archivos de compilación
-*.o
-*.elf
+# Arduino
+*.hex
 *.bin
+*.elf
+*.a
+*.o
 
-# Directorios de compilación
-/build
-/dist
+# ESP32
+*.bin
+*.elf
+*.partitions
+*.csv
 
-# Archivos de configuración del IDE
-/.vscode
-*.json
-*.ini
-
-# Archivos de biblioteca
+# Arduino IDE
+build/
 /libraries
 
-# Archivos de sistema
-.DS_Store
-Thumbs.db
+# VS Code
+.vscode/

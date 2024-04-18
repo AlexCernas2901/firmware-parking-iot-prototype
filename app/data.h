@@ -2,11 +2,12 @@
 #define DATA_H
 
 #include "display_oled.h"
-#include "magnetic_modules.h"
-#include "wifi.h"
+DisplayOled displayOled; // Instanciando la clase DisplayOled
 
-WifiConnection wifiConnection;   // Instanciando la clase WifiConnection
-DisplayOled displayOled;         // Instanciando la clase DisplayOled
+#include "magnetic_modules.h"
 MagneticModules magneticModules; // Instanciando la clase MagneticModules
+
+#include "wifi.h"
+WifiConnection wifiConnection; // Instanciando la clase WifiConnection
 
 #endif
