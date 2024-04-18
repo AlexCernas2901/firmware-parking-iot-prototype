@@ -3,8 +3,8 @@
 
 class RfidReader {
 public:
-  const uint8_t SSPIN = 29;  // GPIO 5
-  const uint8_t RSTPIN = 12; // GPIO 27
+  const uint8_t SSPIN = 5;   // GPIO 5
+  const uint8_t RSTPIN = 27; // GPIO 27
   MFRC522 rfid = MFRC522(SSPIN, RSTPIN);
 
 public:
