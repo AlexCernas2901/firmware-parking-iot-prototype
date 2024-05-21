@@ -15,5 +15,6 @@
 build/
 /libraries
 
-# VS Code
-.vscode/
+# Archivos de sistema
+.DS_Store
+Thumbs.db
