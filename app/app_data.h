@@ -1,6 +1,9 @@
 #ifndef APP_DATA_H
 #define APP_DATA_H
 
+#include "rtc.h"
+DS1307_RTC myrtc; // Instanciando la clase DS1307_RTC
+
 #include "display_oled.h"
 DisplayOled displayOled; // Instanciando la clase DisplayOled
 

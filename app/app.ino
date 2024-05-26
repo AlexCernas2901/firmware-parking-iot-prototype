@@ -8,6 +8,7 @@ void setup() {
   magneticModules.init();
   servos.init();
   delay(5000);
+  myrtc.RTC_init(); // Inicializando el RTC
 }
 
 void loop() {
@@ -18,5 +19,7 @@ void loop() {
   magneticModules.verifyState();
   // displayOled.clearScreen();
   // displayOled.print("Leyendo sensores");
+  myrtc.get_time(); // Obteniendo la fecha y hora del RTC
+  myrtc.show_time(); // Mostrando la fecha y hora en la consola serial
   delay(1000);
 }
