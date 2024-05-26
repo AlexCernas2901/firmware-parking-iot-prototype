@@ -1,48 +1,62 @@
+#ifndef MAGNETIC_MODULES_H
+#define MAGNETIC_MODULES_H
+
+
+#define SENSOR_ENTRADA_1 16 // GPIO 16
+#define SENSOR_ENTRADA_2 4  // GPIO 4
+
+#define SENSOR_SALIDA_1 34 // GPIO 34
+#define SENSOR_SALIDA_2 39 // GPIO 39
+
+#define SENSOR_LUGAR_DISPONIBLE_1 36 // GPIO 36
+#define SENSOR_LUGAR_DISPONIBLE_2 35 // GPIO 35
+#define SENSOR_LUGAR_DISPONIBLE_3 32 // GPIO 32
+
+int lugaresDisponibles[] = {
+  SENSOR_LUGAR_DISPONIBLE_1,
+  SENSOR_LUGAR_DISPONIBLE_2,
+  SENSOR_LUGAR_DISPONIBLE_3
+};
+
+#define SENSOR_LUGAR_DISCAPACITADO_1 25 // GPIO 25
+
+int lugaresDiscapacitados[] = {
+  SENSOR_LUGAR_DISCAPACITADO_1
+};
+
 class MagneticModules {
 public:
-  const int8_t SENSOR_E1 = 27; // GPIO 16
-  const int8_t SENSOR_E2 = 26; // GPIO 4
-  const int8_t SENSOR_S1 = 25; // GPIO 0
-  const int8_t SENSOR_S2 = 24; // GPIO 2
-
-  static const int SENSORES_LUGARES_DISPONIBLES[3];
-  static const int SENSORES_LUGARES_DISCAPACITADOS[1];
-
-  const int LUGARES_DISPONIBLES;
-  const int LUGARES_DISCAPACITADOS;
-
-  const int LUGARES_TOTALES;
-
-public:
   void init(void);
-};
-
-const int MagneticModules::LUGARES_DISPONIBLES = sizeof(MagneticModules::SENSORES_LUGARES_DISPONIBLES) / sizeof(MagneticModules::SENSORES_LUGARES_DISPONIBLES[0]);
-const int MagneticModules::LUGARES_DISCAPACITADOS = sizeof(MagneticModules::SENSORES_LUGARES_DISCAPACITADOS) / sizeof(MagneticModules::SENSORES_LUGARES_DISCAPACITADOS[0]);
-
-const int MagneticModules::LUGARES_TOTALES = MagneticModules::LUGARES_DISPONIBLES + MagneticModules::LUGARES_DISCAPACITADOS;
-
-const int MagneticModules::SENSORES_LUGARES_DISPONIBLES[3] = {
-  23, // GPIO 15
-  22, // GPIO 8
-  21, // GPIO 7
-};
-
-const int MagneticModules::SENSORES_LUGARES_DISCAPACITADOS[1] = {
-  20, // GPIO 6
+  void verifyState(void);
 };
 
 void MagneticModules::init(void) {
-  pinMode(SENSOR_E1, INPUT);
-  pinMode(SENSOR_E2, INPUT);
-  pinMode(SENSOR_S1, INPUT);
-  pinMode(SENSOR_S2, INPUT);
+  pinMode(SENSOR_ENTRADA_1, INPUT);
+  pinMode(SENSOR_ENTRADA_2, INPUT);
 
-  for (int i = 0; i < LUGARES_DISPONIBLES; i++) {
-    pinMode(SENSORES_LUGARES_DISPONIBLES[i], INPUT);
+  pinMode(SENSOR_SALIDA_1, INPUT);
+  pinMode(SENSOR_SALIDA_2, INPUT);
+
+  pinMode(SENSOR_LUGAR_DISPONIBLE_1, INPUT);
+  pinMode(SENSOR_LUGAR_DISPONIBLE_2, INPUT);
+  pinMode(SENSOR_LUGAR_DISPONIBLE_3, INPUT);
+
+  pinMode(SENSOR_LUGAR_DISCAPACITADO_1, INPUT);
+}
+
+void MagneticModules::verifyState(void) {
+  if (digitalRead(SENSOR_LUGAR_DISPONIBLE_1) == LOW) {
+    Serial.println("SENSOR_LUGAR_DISPONIBLE_1 activado");
   }
-
-  for (int i = 0; i < LUGARES_DISCAPACITADOS; i++) {
-    pinMode(SENSORES_LUGARES_DISCAPACITADOS[i], INPUT);
+  if (digitalRead(SENSOR_LUGAR_DISPONIBLE_2) == LOW) {
+    Serial.println("SENSOR_LUGAR_DISPONIBLE_2 activado");
+  }
+  if (digitalRead(SENSOR_LUGAR_DISPONIBLE_3) == LOW) {
+    Serial.println("SENSOR_LUGAR_DISPONIBLE_3 activado");
+  }
+  if (digitalRead(SENSOR_LUGAR_DISCAPACITADO_1) == LOW) {
+    Serial.println("SENSOR_LUGAR_DISCAPACITADO_1 activado");
   }
 }
+
+#endif
