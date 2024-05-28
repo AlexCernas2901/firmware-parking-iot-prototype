@@ -3,13 +3,15 @@
 void setup() {
   Serial.begin(115200);
   // displayOled.init(); // Inicializando la pantalla OLED
-  // wifiConnection.init(); // Inicializando la conexion WiFi
   // displayOled.clearScreen();
-  MSD.MicroSD_init(); // Inicializando la MicroSD
+  // displayOled.printMessage("Hola");
+  // wifiConnection.init(); // Inicializando la conexion WiFi
+  MSD.init(); // Inicializando la MicroSD
   magneticModules.init();
-  servos.init();
+  servos.init(); //
+  leds.init(); //Inicializando los leds
   delay(5000);
-  myrtc.RTC_init(); // Inicializando el RTC
+  myrtc.init(); // Inicializando el RTC
 }
 
 void loop() {
@@ -17,7 +19,8 @@ void loop() {
   servos.cerrarEntrada();
   servos.abrirSalida();
   servos.cerrarSalida();
-  magneticModules.verifyState();
+  magneticModules.verifyGeneralState();
+  json.cars_json();
   // displayOled.clearScreen();
   // displayOled.print("Leyendo sensores");
   myrtc.get_time(); // Obteniendo la fecha y hora del RTC
@@ -25,5 +28,4 @@ void loop() {
   delay(1000);
   TSK.actualizar_tareas();
   TSK.tarea_MSD();
-
 }

@@ -1,15 +1,48 @@
+
+#define LED1_GENERAL_R 25  // GPIO 25
+#define LED1_GENERAL_G 26  // GPIO 26
+#define LED2_GENERAL_R 27  // GPIO 27
+#define LED2_GENERAL_G 14  // GPIO 14
+#define LED1_DISCAPACITADOS_R 12  // GPIO 25
+#define LED1_DISCAPACITADOS_B 15  // GPIO 26
+
+int ledsGenerales[][2] = {
+  { LED1_GENERAL_R, LED1_GENERAL_G },
+  { LED2_GENERAL_R, LED2_GENERAL_G }
+};
+
+int ledsDiscapacitados[][2] = {
+  { LED1_DISCAPACITADOS_R, LED1_DISCAPACITADOS_B }
+};
+
 class Leds {
 public:
-  const int8_t LED1_R = 36; // GPIO 36
-  const int8_t LED1_G = 39; // GPIO 39
-  const int8_t LED1_B = 34; // GPIO 34
-  const int8_t LED2_R = 35; // GPIO 35
-  const int8_t LED2_G = 32; // GPIO 32
-  const int8_t LED2_B = 33; // GPIO 33
-  const int8_t LED3_R = 25; // GPIO 25
-  const int8_t LED3_G = 26; // GPIO 26
-  const int8_t LED3_B = 14; // GPIO 14
-  const int8_t LED4_R = 12; // GPIO 12
-  const int8_t LED4_G = 13; // GPIO 13
-  const int8_t LED4_B = 9;  // GPIO 9
+  void turn_blue(int led1, int led2);
+  void turn_red(int led1, int led2);
+  void turn_green(int led1, int led2);
+  void init(void);
 };
+
+void Leds::init(void) {
+  pinMode(LED1_GENERAL_R, OUTPUT);
+  pinMode(LED1_GENERAL_G, OUTPUT);
+  pinMode(LED2_GENERAL_R, OUTPUT);
+  pinMode(LED2_GENERAL_G, OUTPUT);
+  pinMode(LED1_DISCAPACITADOS_B, OUTPUT);
+  pinMode(LED1_DISCAPACITADOS_R, OUTPUT);
+}
+
+void Leds::turn_red(int led1, int led2) {
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, LOW);
+}
+
+void Leds::turn_green(int led1, int led2) {
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, HIGH);
+}
+
+void Leds::turn_blue(int led1, int led2) {
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, HIGH);
+}

@@ -18,21 +18,22 @@ class millis_tasks {
 
 void millis_tasks :: tarea_MSD ( void ) {
   if ( ( tiempo_actual - tiempo_anterior_MSD ) >= TIEMPO_MSD ){
+    myrtc.get_time();
 
-    MSD.SaveFile("ctm Martin");
-    MSD.ReadFile();
+    String filename = myrtc.format_date('/') + " " + myrtc.format_time();
+    MSD.saveFile(filename);
+    MSD.readFile();
     
-     Serial.println ( "si.- Ejecutando tarea MSD" );
+     Serial.println ( "Ejecutando tarea MSD" );
      tiempo_anterior_MSD = tiempo_actual;
-
   }
 }
+
+
+
+
 void millis_tasks :: actualizar_tareas ( void ) {
-
-
-
   tiempo_actual = millis( );
-
 }
 
 #endif
