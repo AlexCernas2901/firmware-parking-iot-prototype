@@ -1,31 +1,49 @@
 #include "app_data.h"
 
-void setup() {
+long lastMsg = 0;
+
+void setup(void) {
   Serial.begin(115200);
-  // displayOled.init(); // Inicializando la pantalla OLED
+  mqtt.setup_WiFi ( );
+  mqtt.set_MQTT_server ( );
+  mqtt.set_MQTT_callback (  );
+  
+  displayOled.init(); // Inicializando la pantalla OLED
   // displayOled.clearScreen();
-  // displayOled.printMessage("Hola");
-  // wifiConnection.init(); // Inicializando la conexion WiFi
-  MSD.init(); // Inicializando la MicroSD
+  // microSD.init(); // Inicializando la MicroSD
   magneticModules.init();
   servos.init(); //
   leds.init(); //Inicializando los leds
-  delay(5000);
-  myrtc.init(); // Inicializando el RTC
+  myRTC.init(); // Inicializando el RTC
 }
 
-void loop() {
-  servos.abrirEntrada();
-  servos.cerrarEntrada();
-  servos.abrirSalida();
-  servos.cerrarSalida();
-  magneticModules.verifyGeneralState();
-  json.cars_json();
+void loop(void) {
+  displayOled.clearScreen();
+  tsk.actualizarTareas();
+
+  tsk.tareaAbrirEntrada();
+  tsk.tareaCerrarEntrada();
+  tsk.tareaAbrirSalida();
+  tsk.tareaCerrarSalida();
+
+  tsk.tareaVerifyPlaces();
+  // tsk.tareaOLED();
+
+  json.data();
+
   // displayOled.clearScreen();
   // displayOled.print("Leyendo sensores");
-  myrtc.get_time(); // Obteniendo la fecha y hora del RTC
-  myrtc.show_time(); // Mostrando la fecha y hora en la consola serial
-  delay(1000);
-  TSK.actualizar_tareas();
-  TSK.tarea_MSD();
+
+  mqtt.reconnect_MQTT ( );
+
+  long now = millis();
+  if (now - lastMsg > 5000) {
+    lastMsg = now;  
+    mqtt.publish_MQTT ( );
+  }
+
+  displayOled.printMessage(String(magneticModules.updateAvailableGeneralPlaces()), 0, 32);
+  displayOled.printMessage(String(magneticModules.updateAvailableDisabilitiesPlaces()), 0, 40);
+  displayOled.clearScreen();
+  // tsk.tareaMicroSD();
 }

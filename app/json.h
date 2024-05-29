@@ -5,33 +5,36 @@
 
 class JSON {
 public:
-  String cars_json();
+  String data();
 };
 
-String JSON ::cars_json() {
+
+String JSON ::data() {
   String temp = "";
   DynamicJsonDocument doc(1024);
+  myRTC.get_time();
 
-  JsonArray array = doc.to<JsonArray>();
+  doc["fecha"] = String(myRTC.format_date('/'));
+  doc["hora"] = String(myRTC.format_time());
 
-  JsonObject carG1 = array.createNestedObject();
+  JsonArray sensors = doc.createNestedArray("sensors");
+
+  JsonObject carG1 = sensors.createNestedObject();
   carG1["type"] = "general";
-  carG1["state"] = carStates[0];
+  carG1["state"] = carStatesG[0];
 
-  JsonObject carG2 = array.createNestedObject();
+  JsonObject carG2 = sensors.createNestedObject();
   carG2["type"] = "general";
-  carG2["state"] = carStates[1];
+  carG2["state"] = carStatesG[1];
 
-  JsonObject carD1 = array.createNestedObject();
+  JsonObject carD1 = sensors.createNestedObject();
   carD1["type"] = "disabilities";
   carD1["state"] = carStatesD[0];
 
 
   serializeJson(doc, temp);
   serializeJsonPretty(doc, temp);
-  //Serial.begin ( 115200 );
-  // Serial.println ( F ( "Json anidados:" ) );
-  // Serial.println ( temp );
+  Serial.println ( temp );
   return temp;
 }
 

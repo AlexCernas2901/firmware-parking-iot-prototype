@@ -1,19 +1,19 @@
 /* Se incluye librería y se crea objeto para la configuración del cliente WiFi */
-// #include <WiFi.h>
+#include <WiFi.h>
   WiFiClient ESP32_WIFI;
 
 /* Se incluye librería paa utilizar el protocolo de telemetría MQTT, con el objeto correspondiente */
 #include "PubSubClient.h"
   PubSubClient client ( ESP32_WIFI );
 
-/* Directivaas de configuración de red y parámetros MQTT */
-//#define HOTSPOT_WIFI  "Wokwi-GUEST"            /* Nombre del punto de acceso a conectarse */
-//#define HOTSPOT_PWD   ""                       /* Contraseña de la red */
+/* Directivas de configuración de red y parámetros MQTT */
+#define HOTSPOT_WIFI  "Mega_2.4G_BD34"            /* Nombre del punto de acceso a conectarse */
+#define HOTSPOT_PWD   "h7cUhtfh"                       /* Contraseña de la red */
 #define MQTT_SERVER   "test.mosquitto.org"     /* Dirección del Broker MQTT */
 #define MQTT_PORT     1883                     /* Puerto del Broker MQTT */
-#define TXTOPIC       "/TX_IOT"                /* Nombre del topic de publicación */
-#define RXTOPIC       "/RX_IOT"                /* Nombre del topic de suscripción */
-//#define RXTOPIC1      "/JORGE"        /* Nombre del topic de suscripción */
+#define TXTOPIC       "/TX_IOT"         /* Nombre del topic de publicación */
+#define RXTOPIC       "/RX_IOT"         /* Nombre del topic de suscripción */
+#define RXTOPIC1      "/Iot"        /* Nombre del topic de suscripción */
 
 /* Clase para la gestión de la red WiFi y el protocolo MQTT */
 class MQTT {
@@ -69,10 +69,10 @@ void MQTT :: subscribe_MQTT ( void ) {
 
 void MQTT :: publish_MQTT ( void ) {
 
-  String hola = "Es más dura la verdura";
   Serial.println ( F ( "Publicando información" ) );
-  client.publish( TXTOPIC, "Siiiuuuuu");                 /* Función librería PubsubClient */
-  //client.publish( TXTOPIC, hola.c_str ( ) );
+  client.publish( TXTOPIC, "Hola");                 /* Función librería PubsubClient */
+  client.publish( TXTOPIC, json.data().c_str() );
+  client.publish( TXTOPIC, "Yeah");                 /* Función librería PubsubClient */
    
 }
 

@@ -18,7 +18,7 @@ int lugaresDisponibles[] = {
 bool stateCar1 = false;
 bool stateCar2 = false;
 
-bool carStates[] = {
+bool carStatesG[] = {
   stateCar1,
   stateCar2
 };
@@ -28,22 +28,27 @@ bool carStates[] = {
 bool stateCarD1 = false;
 
 bool carStatesD[] = {
-  stateCarD1,
+  stateCarD1
 };
 
 int lugaresDiscapacitados[] = {
   SENSOR_LUGAR_DISCAPACITADO_1
 };
 
+int availableGeneralPlaces = 0;
+int availableDisabilitiePlaces = 0;
+
 class MagneticModules {
 public:
   void init(void);
-  void verifyGeneralState(void);
-  int lengthLugaresDisponibles(void);
+  void verifyGeneralPlacesState(void);
+  int lengthLugaresGenerales(void);
   int lengthLugaresDiscapacitados(void);
+  int updateAvailableGeneralPlaces(void);
+  int updateAvailableDisabilitiesPlaces(void);
 };
 
-int MagneticModules::lengthLugaresDisponibles(void) {
+int MagneticModules::lengthLugaresGenerales(void) {
   return sizeof(lugaresDisponibles) / sizeof(lugaresDisponibles[0]);
 }
 
@@ -64,18 +69,16 @@ void MagneticModules::init(void) {
   pinMode(SENSOR_LUGAR_DISCAPACITADO_1, INPUT);
 }
 
-void MagneticModules::verifyGeneralState(void) {
-  for (int i = 0; i < lengthLugaresDisponibles(); i++) {
+void MagneticModules::verifyGeneralPlacesState(void) {
+  for (int i = 0; i < lengthLugaresGenerales(); i++) {
     if (digitalRead(lugaresDisponibles[i]) == LOW) {
       Serial.println("SENSOR_LUGAR_DISPONIBLE[" + String(i) + "] ocupado");
       leds.turn_red(ledsGenerales[i][0], ledsGenerales[i][1]);  // Enciende el LED rojo
-      carStates[i] = false;
-      delay(1000);
+      carStatesG[i] = false;
     } else {
       Serial.println("SENSOR_LUGAR_DISPONIBLE[" + String(i) + "] libre");
       leds.turn_green(ledsGenerales[i][0], ledsGenerales[i][1]);  // Enciende el LED rojo
-      carStates[i] = true;
-      delay(1000);
+      carStatesG[i] = true;
     }
   }
 
@@ -93,5 +96,32 @@ void MagneticModules::verifyGeneralState(void) {
     }
   }
 }
+
+int MagneticModules::updateAvailableGeneralPlaces(void) {  
+  int occupiedGeneralPlaces = lengthLugaresGenerales();
+  for (int i = 0; i < lengthLugaresGenerales(); i++) {
+    if (carStatesG[i]) {
+      occupiedGeneralPlaces--;
+    }
+  }
+
+  availableGeneralPlaces = lengthLugaresGenerales() - occupiedGeneralPlaces;
+
+  return availableGeneralPlaces;
+}
+
+int MagneticModules::updateAvailableDisabilitiesPlaces(void) {  
+  int occupiedDisabilitiePlaces = lengthLugaresDiscapacitados();
+  for (int i = 0; i < lengthLugaresDiscapacitados(); i++) {
+    if (carStatesD[i]) {
+      occupiedDisabilitiePlaces--;
+    }
+  }
+
+  availableDisabilitiePlaces = lengthLugaresDiscapacitados() - occupiedDisabilitiePlaces;
+
+  return availableDisabilitiePlaces;
+}
+
 
 #endif

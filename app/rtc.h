@@ -6,7 +6,7 @@
 
 RTC_DS1307 rtc;
 
-class DS1307_RTC {
+class RTC {
 public:
     uint8_t hora = 0, minuto = 0, segundo = 0, dia = 0, mes = 0;
     uint16_t ano = 0;
@@ -21,7 +21,7 @@ public:
 };
 
 // Función que configura lo necesario para que el reloj se inicialice
-void DS1307_RTC::init(void) {
+void RTC::init(void) {
     while (!rtc.begin()) {  // Mientras que el reloj no se ha iniciado
         Serial.println(F("Hay un error de reconocimiento del RTC, revisa conexiones y alimentación"));
         Serial.flush();  // Espera a que se transmita la información serial correctamente
@@ -36,7 +36,7 @@ void DS1307_RTC::init(void) {
 }
 
 // Función para obtener la hora actual del RTC
-void DS1307_RTC::get_time(void) {
+void RTC::get_time(void) {
     DateTime now = rtc.now();
     segundo = now.second();
     minuto = now.minute();
@@ -47,7 +47,7 @@ void DS1307_RTC::get_time(void) {
 }
 
 // Función que le da un formato legible a la fecha
-String DS1307_RTC::format_date(char caracter) {
+String RTC::format_date(char caracter) {
     fecha = "";
     if (dia < 10) fecha += '0';
     fecha += dia;
@@ -61,7 +61,7 @@ String DS1307_RTC::format_date(char caracter) {
 }
 
 // Función que le da un formato legible al tiempo
-String DS1307_RTC::format_time(void) {
+String RTC::format_time(void) {
     tiempo = "";
     if (hora < 10) tiempo += '0';
     tiempo += hora;
@@ -76,7 +76,7 @@ String DS1307_RTC::format_time(void) {
 }
 
 // Función que muestra en la consola serial la fecha y la hora
-void DS1307_RTC::show_time(void) {
+void RTC::show_time(void) {
     format_time();  // Dar formato al tiempo
     Serial.print(F("Hora: "));
     Serial.println(tiempo);

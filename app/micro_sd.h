@@ -7,7 +7,7 @@
 #define MICROSD_PIN 5
 File microSDFile;  // Archivo para escribir o leer en la MicroSD
 
-class MicroSD {
+class MICRO_SD {
 public:
     String filename = "/registro_microsd.txt";  // Nombre de archivo que incluye "/" que indica la ubicación en raíz
 
@@ -17,7 +17,7 @@ public:
     void readFile(void);
 };
 
-void MicroSD::init(void) {
+void MICRO_SD::init(void) {
     while (!SD.begin(MICROSD_PIN)) {
         Serial.println(F("Falló la inicialización del módulo MicroSD"));
         delay(1000);
@@ -25,12 +25,11 @@ void MicroSD::init(void) {
     Serial.println(F("La librería MicroSD ha inicializado con éxito"));
 }
 
-void MicroSD::saveFile(String msg) {
-    extern DS1307_RTC myrtc;  // Asegurarse de que 'myrtc' esté declarado externamente
-    myrtc.get_time();
-    myrtc.format_date('_');
+void MICRO_SD::saveFile(String msg) {
+    myRTC.get_time();
+    myRTC.format_date('_');
     filename = "/";
-    filename += myrtc.fecha;  // Se usará 'fecha' de la clase RTC
+    filename += myRTC.fecha + ".txt";  // Se usará 'fecha' de la clase RTC
     microSDFile = SD.open(filename, FILE_APPEND);
 
     if (microSDFile) {
@@ -53,7 +52,7 @@ void MicroSD::saveFile(String msg) {
     delay(1000);
 }
 
-void MicroSD::readFile(void) {
+void MICRO_SD::readFile(void) {
     microSDFile = SD.open(filename);
 
     if (microSDFile) {

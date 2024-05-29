@@ -1,39 +1,104 @@
 #ifndef Tasks_h
 #define Tasks_h
 
-#define TIEMPO_MSD 10000
+#define TIEMPO_MICRO_SD 1000
+#define TIEMPO_ABRIR_ENTRADA 1000
+#define TIEMPO_CERRAR_ENTRADA 100
+#define TIEMPO_ABRIR_SALIDA 100
+#define TIEMPO_CERRAR_SALIDA 100
+#define TIEMPO_VERIFY_GENERAL_PLACES_STATE 200
+// #define TIEMPO_OLED 200 
 
 class millis_tasks {
 
   public:
-    uint64_t tiempo_anterior_MSD = 0,  // Contador de tiempo que tendrá múltiplos de TIEMPO3.
-             tiempo_actual = 0;      // Contador de tiempo que tendrá múltiplos de TIEMPO.
-    
+    uint64_t tiempoActual = 0,      // Contador de tiempo que tendrá múltiplos de TIEMPO.
+             tiempoAnteriorMicroSD = 0,  // Contador de tiempo que tendrá múltiplos de TIEMPO3.
+             tiempoAnteriorAbrirEntrada = 0,
+             tiempoAnteriorCerrarEntrada = 0,
+             tiempoAnteriorAbrirSalida = 0,
+             tiempoAnteriorCerrarSalida = 0,
+             tiempoAnteriorVerifyGeneralPlacesState = 0;
+             // tiempoAnteriorOLED;
   public:
-
-    void tarea_MSD ( void );
-    void actualizar_tareas (void );  // Función que actualiza el conteo obtenido de la función "millis()".
- 
+    void actualizarTareas (void );  // Función que actualiza el conteo obtenido de la función "millis()".
+    void tareaMicroSD ( void );
+    void tareaAbrirEntrada(void);
+    void tareaCerrarEntrada(void);
+    void tareaAbrirSalida(void);
+    void tareaCerrarSalida(void);
+    void tareaVerifyPlaces(void);
+    // void tareaOLED(void);
 };
 
-void millis_tasks :: tarea_MSD ( void ) {
-  if ( ( tiempo_actual - tiempo_anterior_MSD ) >= TIEMPO_MSD ){
-    myrtc.get_time();
+void millis_tasks :: tareaMicroSD ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorMicroSD ) >= TIEMPO_MICRO_SD ){
+    String cars = json.data() + ",";
 
-    String filename = myrtc.format_date('/') + " " + myrtc.format_time();
-    MSD.saveFile(filename);
-    MSD.readFile();
+    microSD.saveFile(cars);
+    microSD.readFile();
     
-     Serial.println ( "Ejecutando tarea MSD" );
-     tiempo_anterior_MSD = tiempo_actual;
+    Serial.println ( "Ejecutando tarea MicroSD" );
+    tiempoAnteriorMicroSD = tiempoActual;
   }
 }
 
+void millis_tasks :: tareaAbrirEntrada ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorAbrirEntrada ) >= TIEMPO_ABRIR_ENTRADA ){
+    servos.abrirEntrada();
 
+    Serial.println ( "Ejecutando tarea abrirEntrada" );
+    tiempoAnteriorAbrirEntrada = tiempoActual;
+  }
+}
 
+void millis_tasks :: tareaCerrarEntrada ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorCerrarEntrada ) >= TIEMPO_CERRAR_ENTRADA ){
+    servos.cerrarEntrada();
 
-void millis_tasks :: actualizar_tareas ( void ) {
-  tiempo_actual = millis( );
+    Serial.println ( "Ejecutando tarea cerrarEntrada" );
+    tiempoAnteriorCerrarEntrada = tiempoActual;
+  }
+}
+
+void millis_tasks :: tareaAbrirSalida ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorAbrirSalida ) >= TIEMPO_ABRIR_SALIDA ){
+    servos.abrirSalida();
+
+    Serial.println ( "Ejecutando tarea abrirSalida" );
+    tiempoAnteriorAbrirSalida = tiempoActual;
+  }
+}
+
+void millis_tasks :: tareaCerrarSalida ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorCerrarSalida ) >= TIEMPO_CERRAR_SALIDA ){
+    servos.cerrarSalida();
+
+    Serial.println ( "Ejecutando tarea cerrarSalida" );
+    tiempoAnteriorCerrarSalida = tiempoActual;
+  }
+}
+
+void millis_tasks :: tareaVerifyPlaces ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorVerifyGeneralPlacesState ) >= TIEMPO_VERIFY_GENERAL_PLACES_STATE ){
+    magneticModules.verifyGeneralPlacesState();
+
+    Serial.println ( "Ejecutando tarea cerrarSalida" );
+    tiempoAnteriorVerifyGeneralPlacesState = tiempoActual;
+  }
+}
+
+// void millis_tasks ::  tareaOLED ( void ) {
+//   if ( ( tiempoActual - tiempoAnteriorOLED ) >= TIEMPO_OLED ){
+//     displayOled.printMessage("me encanta el fornite");
+
+//     Serial.println ( "Ejecutando tarea OLED" );
+//     tiempoAnteriorOLED = tiempoActual;
+//   }
+// }
+
+void millis_tasks :: actualizarTareas ( void ) {
+  tiempoActual = millis( );
 }
 
 #endif

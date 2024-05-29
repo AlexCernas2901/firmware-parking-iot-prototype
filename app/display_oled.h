@@ -13,20 +13,19 @@ public:
 
 public:
   void init(void);
-  void printMessage(String message);
+  void printMessage(String message, int x, int y);
   void clearScreen(void);
 };
 
 void DISPLAY_OLED::init(void) {
-  delay(250);       // Esperando a que el OLED se encienda
   display.begin();  // Inicializando la comunicación con la pantalla
 }
 
-void DISPLAY_OLED::printMessage(String message) {
+void DISPLAY_OLED::printMessage(String message, int x, int y) {
   display.clearDisplay();              // Limpiando la pantalla
   display.setTextSize(1);              // Estableciendo el tamaño del texto
   display.setTextColor(SH110X_WHITE);  // Estableciendo el color del texto
-  display.setCursor(0, 0);             // Estableciendo la posición del cursor
+  display.setCursor(x, y);             // Estableciendo la posición del cursor
   display.println(message);            // Mostrando el mensaje de inicializacion
   display.display();                   // Actualizando la pantalla para mostrar el cambio
 }
