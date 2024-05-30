@@ -5,11 +5,11 @@
 
 class JSON {
 public:
-  String data();
+  String data(void);
 };
 
 
-String JSON ::data() {
+String JSON ::data(void) {
   String temp = "";
   DynamicJsonDocument doc(1024);
   myRTC.get_time();
@@ -33,8 +33,7 @@ String JSON ::data() {
 
 
   serializeJson(doc, temp);
-  serializeJsonPretty(doc, temp);
-  Serial.println ( temp );
+  // Serial.println ( temp );
   return temp;
 }
 

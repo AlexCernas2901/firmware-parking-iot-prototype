@@ -23,11 +23,20 @@ bool carStatesG[] = {
   stateCar2
 };
 
+bool previousCarStatesG[] = {
+  stateCar1,
+  stateCar2
+};
+
 #define SENSOR_LUGAR_DISCAPACITADO_1 32  // GPIO 25
 
 bool stateCarD1 = false;
 
 bool carStatesD[] = {
+  stateCarD1
+};
+
+bool previousCarStatesD[] = {
   stateCarD1
 };
 
@@ -41,7 +50,7 @@ int availableDisabilitiePlaces = 0;
 class MagneticModules {
 public:
   void init(void);
-  void verifyGeneralPlacesState(void);
+  bool verifyGeneralPlacesState(void);
   int lengthLugaresGenerales(void);
   int lengthLugaresDiscapacitados(void);
   int updateAvailableGeneralPlaces(void);
@@ -69,32 +78,42 @@ void MagneticModules::init(void) {
   pinMode(SENSOR_LUGAR_DISCAPACITADO_1, INPUT);
 }
 
-void MagneticModules::verifyGeneralPlacesState(void) {
+bool MagneticModules::verifyGeneralPlacesState(void) {
+  bool stateChanged = false;
+
   for (int i = 0; i < lengthLugaresGenerales(); i++) {
-    if (digitalRead(lugaresDisponibles[i]) == LOW) {
-      Serial.println("SENSOR_LUGAR_DISPONIBLE[" + String(i) + "] ocupado");
-      leds.turn_red(ledsGenerales[i][0], ledsGenerales[i][1]);  // Enciende el LED rojo
-      carStatesG[i] = false;
-    } else {
+    bool currentState = (digitalRead(lugaresDisponibles[i]) == HIGH);
+    if (currentState != carStatesG[i]) {
+      carStatesG[i] = currentState;
+      stateChanged = true;
+    }
+
+    if (carStatesG[i]) {
+      leds.turn_green(ledsGenerales[i][0], ledsGenerales[i][1]);  // Enciende el LED verde
       Serial.println("SENSOR_LUGAR_DISPONIBLE[" + String(i) + "] libre");
-      leds.turn_green(ledsGenerales[i][0], ledsGenerales[i][1]);  // Enciende el LED rojo
-      carStatesG[i] = true;
+    } else {
+      leds.turn_red(ledsGenerales[i][0], ledsGenerales[i][1]);  // Enciende el LED rojo
+      Serial.println("SENSOR_LUGAR_DISPONIBLE[" + String(i) + "] ocupado");
     }
   }
 
   for (int i = 0; i < lengthLugaresDiscapacitados(); i++) {
-    if (digitalRead(lugaresDiscapacitados[i]) == LOW) {
-      Serial.println("SENSOR_LUGAR_DISCAPACITADO[" + String(i) + "] ocupado");
-      leds.turn_red(ledsDiscapacitados[i][0], ledsDiscapacitados[i][1]);  // Enciende el LED rojo
-      carStatesD[i] = false;
-      delay(1000);
-    } else {
-      Serial.println("SENSOR_LUGAR_DISCAPACITADO[" + String(i) + "] libre");
+    bool currentState = (digitalRead(lugaresDiscapacitados[i]) == HIGH);
+    if (currentState != carStatesD[i]) {
+      carStatesD[i] = currentState;
+      stateChanged = true;
+    }
+
+    if (carStatesD[i]) {
       leds.turn_blue(ledsDiscapacitados[i][0], ledsDiscapacitados[i][1]);  // Enciende el LED azul
-      carStatesD[i] = true;
-      delay(1000);
+      Serial.println("SENSOR_LUGAR_DISCAPACITADO[" + String(i) + "] libre");
+    } else {
+      leds.turn_red(ledsDiscapacitados[i][0], ledsDiscapacitados[i][1]);  // Enciende el LED rojo
+      Serial.println("SENSOR_LUGAR_DISCAPACITADO[" + String(i) + "] ocupado");
     }
   }
+
+  return stateChanged;
 }
 
 int MagneticModules::updateAvailableGeneralPlaces(void) {  
@@ -122,6 +141,5 @@ int MagneticModules::updateAvailableDisabilitiesPlaces(void) {
 
   return availableDisabilitiePlaces;
 }
-
 
 #endif

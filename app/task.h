@@ -7,7 +7,8 @@
 #define TIEMPO_ABRIR_SALIDA 100
 #define TIEMPO_CERRAR_SALIDA 100
 #define TIEMPO_VERIFY_GENERAL_PLACES_STATE 200
-// #define TIEMPO_OLED 200 
+#define TIEMPO_OLED 200 
+#define TIEMPO_MQTT 200
 
 class millis_tasks {
 
@@ -18,8 +19,9 @@ class millis_tasks {
              tiempoAnteriorCerrarEntrada = 0,
              tiempoAnteriorAbrirSalida = 0,
              tiempoAnteriorCerrarSalida = 0,
-             tiempoAnteriorVerifyGeneralPlacesState = 0;
-             // tiempoAnteriorOLED;
+             tiempoAnteriorVerifyGeneralPlacesState = 0,
+             tiempoAnteriorOLED = 0,
+             tiempoAnteriorMQTT = 0;
   public:
     void actualizarTareas (void );  // Función que actualiza el conteo obtenido de la función "millis()".
     void tareaMicroSD ( void );
@@ -28,7 +30,8 @@ class millis_tasks {
     void tareaAbrirSalida(void);
     void tareaCerrarSalida(void);
     void tareaVerifyPlaces(void);
-    // void tareaOLED(void);
+    void tareaOLED(void);
+    void tareaMQTT(void);
 };
 
 void millis_tasks :: tareaMicroSD ( void ) {
@@ -88,14 +91,31 @@ void millis_tasks :: tareaVerifyPlaces ( void ) {
   }
 }
 
-// void millis_tasks ::  tareaOLED ( void ) {
-//   if ( ( tiempoActual - tiempoAnteriorOLED ) >= TIEMPO_OLED ){
-//     displayOled.printMessage("me encanta el fornite");
+void millis_tasks ::  tareaOLED ( void ) {
+  if ( ( tiempoActual - tiempoAnteriorOLED ) >= TIEMPO_OLED ){
+  displayOled.printMessage("Generales:" + String(magneticModules.updateAvailableGeneralPlaces()), "Discapacitados:" + String(magneticModules.updateAvailableDisabilitiesPlaces()));
 
-//     Serial.println ( "Ejecutando tarea OLED" );
-//     tiempoAnteriorOLED = tiempoActual;
-//   }
-// }
+    Serial.println ( "Ejecutando tarea displayOled" );
+    tiempoAnteriorOLED = tiempoActual;
+  }
+}
+
+void millis_tasks :: tareaMQTT(void) {
+  if ( ( tiempoActual - tiempoAnteriorMQTT ) >= TIEMPO_MQTT ){
+    long lastMsg = 0;
+
+    mqtt.reconnect_MQTT ( );
+
+    long now = millis();
+    if (now - lastMsg > 5000) {
+      lastMsg = now;  
+      mqtt.publish_MQTT ( );
+    }
+
+    Serial.println ( "Ejecutando tarea publish_MQTT" );
+    tiempoAnteriorMQTT = tiempoActual;
+  }
+}
 
 void millis_tasks :: actualizarTareas ( void ) {
   tiempoActual = millis( );

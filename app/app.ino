@@ -1,16 +1,17 @@
 #include "app_data.h"
 
-long lastMsg = 0;
+// long lastMsg = 0;
 
 void setup(void) {
   Serial.begin(115200);
+
   mqtt.setup_WiFi ( );
   mqtt.set_MQTT_server ( );
   mqtt.set_MQTT_callback (  );
   
   displayOled.init(); // Inicializando la pantalla OLED
-  // displayOled.clearScreen();
-  // microSD.init(); // Inicializando la MicroSD
+  tsk.tareaOLED();
+  microSD.init(); // Inicializando la MicroSD
   magneticModules.init();
   servos.init(); //
   leds.init(); //Inicializando los leds
@@ -18,7 +19,6 @@ void setup(void) {
 }
 
 void loop(void) {
-  displayOled.clearScreen();
   tsk.actualizarTareas();
 
   tsk.tareaAbrirEntrada();
@@ -27,23 +27,25 @@ void loop(void) {
   tsk.tareaCerrarSalida();
 
   tsk.tareaVerifyPlaces();
-  // tsk.tareaOLED();
 
-  json.data();
+  Serial.println(String(magneticModules.verifyGeneralPlacesState()));
+  if (magneticModules.verifyGeneralPlacesState()) {
+    tsk.tareaMQTT();
+  }
 
+  tsk.tareaOLED();
   // displayOled.clearScreen();
   // displayOled.print("Leyendo sensores");
 
-  mqtt.reconnect_MQTT ( );
+/*  mqtt.reconnect_MQTT ( );
 
   long now = millis();
   if (now - lastMsg > 5000) {
     lastMsg = now;  
     mqtt.publish_MQTT ( );
-  }
+  } */
 
-  displayOled.printMessage(String(magneticModules.updateAvailableGeneralPlaces()), 0, 32);
-  displayOled.printMessage(String(magneticModules.updateAvailableDisabilitiesPlaces()), 0, 40);
-  displayOled.clearScreen();
   // tsk.tareaMicroSD();
+  tsk.tareaMicroSD();
+  delay(1000);
 }
